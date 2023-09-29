@@ -1,12 +1,15 @@
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import Layout from "./components/layout/Layout";
+import Auth from "./components/auth/Auth";
 
 function App() {
   return (
-    <div className="App">
-      <h1 className='text-3x1, font-bold underline text-red-600'>
-        Simple React Typescript Tailwind Sample
-      </h1>
-    </div>
+    <Layout>
+      <Routes>
+        <Route path='' element={<Auth />} />
+      </Routes>
+    </Layout>
   );
 }
 
