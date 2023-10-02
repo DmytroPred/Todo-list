@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 
-.tdata {
+.text-input {
     @apply px-5 py-2 text-lg rounded-full border border-gray-300;
 }

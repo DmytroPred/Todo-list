@@ -18,13 +18,13 @@ const Auth = () => {
   return (
     <div className='flex flex-col align-center justify-center w-1/2 h-1/2 m-auto mt-16'>
       <input
-        className='tdata mb-3'
+        className='text-input mb-3'
         type='mail'
         placeholder='Email...'
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
-        className='tdata'
+        className='text-input'
         type='password'
         placeholder='Password...'
         onChange={(e) => setPassword(e.target.value)}
