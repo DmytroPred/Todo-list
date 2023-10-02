@@ -1,10 +1,10 @@
-import { useNavigate } from 'react-router-dom';
 import LogoutButton from '../ui/LogoutButton';
 import { useContext } from 'react';
 import AuthContext, { AuthContextType } from '../../store/auth-context';
+import { useRouter } from 'next/navigation';
 
 const Header = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const authCtx = useContext<AuthContextType>(AuthContext);
 
   return (
@@ -18,7 +18,7 @@ const Header = () => {
         {authCtx.authenticated ? (
           <LogoutButton></LogoutButton>
         ) : (
-          <button onClick={() => navigate('auth')}>Sign in</button>
+          <button onClick={() => router.push('/auth')}>Sign in</button>
         )}
       </div>
     </div>

@@ -1,11 +1,21 @@
-import { useState } from 'react';
+'use client';
+import { useContext, useEffect, useState } from 'react';
 import { auth } from '../config/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import GoogleLoginButton from '../components/ui/GoogleLoginButton';
+import AuthContext from '../store/auth-context';
+import { useRouter } from 'next/navigation';
 
 const Auth = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+
+  const router = useRouter();
+  const authCtx = useContext(AuthContext);
+
+  useEffect(() => {
+    if (authCtx.authenticated) router.push('/');
+  }, [authCtx.authenticated]);
 
   const signIn = async () => {
     try {
