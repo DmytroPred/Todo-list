@@ -1,7 +1,7 @@
-import { PropsWithChildren } from "react";
-import Header from "./Header";
+import { PropsWithChildren } from 'react';
+import Header from './Header';
 
-const Layout = ({ children }: PropsWithChildren<any>) => {
+const Layout = ({ children }: PropsWithChildren) => {
   return (
     <div>
       <Header></Header>
