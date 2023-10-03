@@ -1,12 +1,13 @@
 'use client';
 import { PropsWithChildren, createContext, useState } from 'react';
 import { User } from 'firebase/auth';
+import { Dispatch } from 'react';
 
 export interface AuthContextType {
   user: User | null;
   authenticated: boolean;
-  setUser: (user: User | null) => void;
-  setIsAuthenticated: (user: User | null) => void;
+  setUser: Dispatch<User | null>;
+  setIsAuthenticated: Dispatch<User | null>;
 }
 
 const AuthContext = createContext<AuthContextType>({
