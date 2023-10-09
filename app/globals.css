@@ -2,7 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+.form-container {
+    @apply flex flex-col content-center justify-center w-1/2 h-1/2 m-auto mt-16 gap-3;
+}
+
+.form {
+    @apply flex flex-col gap-3;
+}
 
 .text-input {
     @apply px-5 py-2 text-lg rounded-full border border-gray-300;
+}
+
+.form-error {
+    @apply text-red-600 px-5 text-sm;
+}
+
+.submit-button {
+    @apply cursor-pointer rounded-full bg-black py-3 px-5 text-white;
+}
+
+.required {
+    @apply flex flex-col gap-1
 }
