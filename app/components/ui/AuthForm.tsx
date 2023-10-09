@@ -17,19 +17,9 @@ const AuthForm = ({ isSignUp }: { isSignUp: boolean }) => {
   const onSubmit = async (data: Inputs) => {
     try {
       if (isSignUp) {
-        await createUserWithEmailAndPassword(
-          auth,
-          data.email,
-          data.password
-        ).then((result) => {
-          console.log(result);
-        });
+        await createUserWithEmailAndPassword(auth, data.email, data.password);
       } else {
-        await signInWithEmailAndPassword(auth, data.email, data.password).then(
-          (result) => {
-            console.log(result);
-          }
-        );
+        await signInWithEmailAndPassword(auth, data.email, data.password);
       }
     } catch (err) {
       console.error(err);

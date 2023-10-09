@@ -29,7 +29,7 @@ const Header = () => {
           loggedInTemplate
         ) : (
           <>
-            <button className='mr-5' onClick={() => router.push('/sign-in')}>
+            <button className='mr-8' onClick={() => router.push('/sign-in')}>
               Sign in
             </button>
             <button onClick={() => router.push('/sign-up')}>Sign up</button>
