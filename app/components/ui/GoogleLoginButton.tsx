@@ -1,11 +1,14 @@
 import { signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '../../config/firebase';
 import classes from './GoogleLoginButton.module.css';
+import { addUserIntoFirestore } from '@/app/utils/add-user-into-firestore';
 
 const GoogleLoginButton = () => {
   const signInWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      await signInWithPopup(auth, googleProvider).then((result) => {
+        addUserIntoFirestore(result, true);
+      });
     } catch (err) {
       console.error(err);
     }

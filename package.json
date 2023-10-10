@@ -14,12 +14,14 @@
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-hook-form": "^7.47.0"
+    "react-hook-form": "^7.47.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@types/uuid": "^9.0.5",
     "autoprefixer": "latest",
     "postcss": "latest",
     "tailwindcss": "latest",

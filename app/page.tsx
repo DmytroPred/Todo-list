@@ -1,6 +1,8 @@
 'use client';
-function App() {
-  return <div>Home</div>;
+import TaskTable from './components/ui/TaskTable';
+
+function HomePage() {
+  return <TaskTable />;
 }
 
-export default App;
+export default HomePage;

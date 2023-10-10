@@ -1,4 +1,5 @@
 import { auth } from '@/app/config/firebase';
+import { addUserIntoFirestore } from '@/app/utils/add-user-into-firestore';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -17,7 +18,7 @@ const AuthForm = ({ isSignUp }: { isSignUp: boolean }) => {
   const onSubmit = async (data: Inputs) => {
     try {
       if (isSignUp) {
-        await createUserWithEmailAndPassword(auth, data.email, data.password);
+        createUser(data);
       } else {
         await signInWithEmailAndPassword(auth, data.email, data.password);
       }
@@ -25,6 +26,12 @@ const AuthForm = ({ isSignUp }: { isSignUp: boolean }) => {
       console.error(err);
     }
   };
+
+  async function createUser(data: Inputs): Promise<void> {
+    await createUserWithEmailAndPassword(auth, data.email, data.password).then(
+      (result) => addUserIntoFirestore(result)
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='form'>

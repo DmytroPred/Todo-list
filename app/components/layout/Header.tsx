@@ -1,3 +1,4 @@
+'use client';
 import LogoutButton from '../ui/LogoutButton';
 import { useContext } from 'react';
 import AuthContext, { AuthContextType } from '../../store/auth-context';
@@ -18,12 +19,17 @@ const Header = () => {
   );
 
   return (
-    <div className='bg-black py-8 px-8 text-white flex justify-between items-center'>
-      <img
-        className='w-12'
-        src='https://upload.wikimedia.org/wikipedia/commons/6/67/Microsoft_To-Do_icon.png'
-        alt=''
-      />
+    <div className='shadow-lg bg-black py-8 px-8 text-white flex justify-between items-center'>
+      <div className='flex gap-10'>
+        <img
+          className='w-12 cursor-pointer'
+          src='https://upload.wikimedia.org/wikipedia/commons/6/67/Microsoft_To-Do_icon.png'
+          alt=''
+          onClick={() => router.push('/')}
+        />
+
+        <button onClick={() => router.push('/')}>Home</button>
+      </div>
       <div>
         {authCtx.authenticated ? (
           loggedInTemplate

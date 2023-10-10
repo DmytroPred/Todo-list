@@ -3,6 +3,7 @@ import './globals.css';
 import { Inter } from 'next/font/google';
 import Layout from './components/layout/Layout';
 import { AuthContextProvider } from './store/auth-context';
+import { TaskContextProvider } from './store/task-context';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -15,7 +16,9 @@ export default function RootLayout({
     <html lang='en'>
       <body className={inter.className}>
         <AuthContextProvider>
-          <Layout>{children}</Layout>
+          <TaskContextProvider>
+            <Layout>{children}</Layout>
+          </TaskContextProvider>
         </AuthContextProvider>
       </body>
     </html>
