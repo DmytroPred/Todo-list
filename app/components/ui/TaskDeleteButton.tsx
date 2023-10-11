@@ -10,12 +10,13 @@ const TaskDeleteButton = ({ deleteTaskId }: { deleteTaskId: string }) => {
   return (
     <button
       className='bg-red-500 text-white rounded-full py-1 px-3'
-      onClick={() =>
+      onClick={(e) => {
+        e.stopPropagation();
         tasksCtx.deleteTask({
           taskId: deleteTaskId,
           userId: (authCtx.user as User).uid,
-        })
-      }
+        });
+      }}
     >
       Delete
     </button>

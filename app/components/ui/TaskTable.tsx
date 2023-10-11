@@ -1,14 +1,12 @@
 'use client';
-import TaskContext, { TaskContextType } from '@/app/store/task-context';
-import React, { useContext } from 'react';
+import React from 'react';
 import TaskDeleteButton from './TaskDeleteButton';
 import classes from './TaskTable.module.css';
 import { Task } from '@/app/models/task.interface';
 import { useRouter } from 'next/navigation';
 
-const TaskTable = () => {
+const TaskTable = ({ taskList }: { taskList: Task[] }) => {
   const router = useRouter();
-  const tasksCtx = useContext<TaskContextType>(TaskContext);
 
   const headers = [
     'Name',
@@ -20,7 +18,7 @@ const TaskTable = () => {
   ];
 
   return (
-    <table className='my-12 border-separate border-spacing-0 border rounded-2xl w-11/12 h-11/12 mx-auto'>
+    <table className='mt-6 mb-12 border-separate border-spacing-0 border rounded-2xl w-11/12 h-11/12 mx-auto'>
       <thead>
         <tr className='text-left row-container'>
           {headers.map((header) => {
@@ -33,7 +31,7 @@ const TaskTable = () => {
         </tr>
       </thead>
       <tbody>
-        {tasksCtx.taskList.map((task: Task, index: number) => {
+        {taskList.map((task: Task, index: number) => {
           return (
             <tr
               key={task.id}
@@ -42,9 +40,7 @@ const TaskTable = () => {
             >
               <td
                 className={`p-4 ${
-                  tasksCtx.taskList.length === index + 1
-                    ? classes.roundLeftCell
-                    : ''
+                  taskList.length === index + 1 ? classes.roundLeftCell : ''
                 }`}
               >
                 {task.name.slice(0, 20)}
@@ -63,9 +59,7 @@ const TaskTable = () => {
               <td className='p-4'>{task.isDone ? 'Done' : 'In progress'}</td>
               <td
                 className={`p-4 ${
-                  tasksCtx.taskList.length === index + 1
-                    ? classes.roundRightCell
-                    : ''
+                  taskList.length === index + 1 ? classes.roundRightCell : ''
                 }`}
               >
                 <TaskDeleteButton deleteTaskId={task.id} />
