@@ -19,13 +19,12 @@ const EditTaskPage = (props: { params: { taskId: string } }) => {
       ).data() as Task;
 
       setTask(taskDoc);
-      console.log(taskDoc);
     }
 
     fetchTaskById();
   }, []);
 
-  return <TaskForm isEditing={true} task={task} />;
+  return <TaskForm isEditing={true} taskId={task?.id} />;
 };
 
 export default EditTaskPage;

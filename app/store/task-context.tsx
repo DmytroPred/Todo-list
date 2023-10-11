@@ -8,6 +8,7 @@ export interface TaskContextType {
   taskList: Task[];
   setTasks: Dispatch<Task[]>;
   addTask: Dispatch<Task>;
+  updateTask: Dispatch<Task>;
   deleteTask: Dispatch<DeleteTaskDispatchType>;
 }
 
@@ -20,6 +21,7 @@ const TaskContext = createContext<TaskContextType>({
   taskList: [],
   setTasks: () => {},
   addTask: () => {},
+  updateTask: () => {},
   deleteTask: () => {},
 });
 
@@ -33,6 +35,14 @@ export function TaskContextProvider(props: PropsWithChildren) {
   async function addTaskHandler(task: Task): Promise<void> {
     setTaskList((prevValue: Task[]) => {
       prevValue.unshift(task);
+      return prevValue;
+    });
+  }
+
+  function updateTaskHandler(task: Task) {
+    setTaskList((prevValue: Task[]) => {
+      const taskIndex = prevValue.findIndex((el) => el.id === task.id);
+      prevValue[taskIndex] = task;
       return prevValue;
     });
   }
@@ -54,6 +64,7 @@ export function TaskContextProvider(props: PropsWithChildren) {
     taskList: taskList,
     setTasks: setTasksHandler,
     addTask: addTaskHandler,
+    updateTask: updateTaskHandler,
     deleteTask: deleteTaskHandler,
   };
 

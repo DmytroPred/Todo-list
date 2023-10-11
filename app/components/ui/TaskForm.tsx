@@ -1,17 +1,19 @@
-import React, { useContext } from 'react';
+'use client';
+import React, { useContext, useEffect, useRef } from 'react';
 import FormTitle from './FormTitle';
 import { useRouter } from 'next/navigation';
 import { db } from '@/app/config/firebase';
 import AuthContext from '@/app/store/auth-context';
 import TaskContext from '@/app/store/task-context';
-import { Timestamp, setDoc, doc } from 'firebase/firestore';
+import { Timestamp, setDoc, doc, updateDoc } from 'firebase/firestore';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import { Task } from '@/app/models/task.interface';
+import { toast } from 'react-toastify';
 
 interface Props {
   isEditing: boolean;
-  task?: Task;
+  taskId?: string;
 }
 
 interface Inputs {
@@ -19,33 +21,67 @@ interface Inputs {
   description: string;
 }
 
-const TaskForm = ({ isEditing, task }: Props) => {
+const TaskForm = ({ isEditing, taskId }: Props) => {
+  const saveNotification = () => toast('Task updated!');
+  const editedTaskRef = useRef<Task | null>(null);
   const router = useRouter();
   const authCtx = useContext(AuthContext);
   const tasksCtx = useContext(TaskContext);
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
 
+  useEffect(() => {
+    if (isEditing && taskId) {
+      const task = tasksCtx.taskList.find((task) => task.id === taskId);
+
+      if (task) {
+        editedTaskRef.current = task;
+        updateForm(editedTaskRef.current);
+      }
+    }
+  }, [taskId]);
+
+  function updateForm(task: Task) {
+    setValue('name', task.name);
+    setValue('description', task.description);
+  }
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (!authCtx.user) return;
-    const id = uuidv4();
+    const id = editedTaskRef.current ? editedTaskRef.current.id : uuidv4();
     const task = {
       ...data,
-      creationDate: Timestamp.fromDate(new Date()),
+      creationDate: editedTaskRef.current
+        ? editedTaskRef.current.creationDate
+        : Timestamp.fromDate(new Date()),
       modificationDate: Timestamp.fromDate(new Date()),
       isDone: false,
       id: id,
     };
 
-    await setDoc(doc(db, `users/${authCtx.user.uid}/tasks/${id}`), task).then(
-      () => {
-        tasksCtx.addTask(task);
-        router.push('/');
-      }
-    );
+    if (isEditing) {
+      await updateDoc(
+        doc(db, `users/${authCtx.user.uid}/tasks/${id}`),
+        task
+      ).then(() => {
+        tasksCtx.updateTask(task);
+        updateForm(task);
+        saveNotification();
+      });
+    }
+
+    if (!isEditing) {
+      await setDoc(doc(db, `users/${authCtx.user.uid}/tasks/${id}`), task).then(
+        () => {
+          tasksCtx.addTask(task);
+          router.push('/');
+        }
+      );
+    }
   };
 
   return (

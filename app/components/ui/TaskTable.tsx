@@ -47,7 +47,8 @@ const TaskTable = () => {
                     : ''
                 }`}
               >
-                {task.name}
+                {task.name.slice(0, 20)}
+                {task.name.length > 20 ? '...' : ''}
               </td>
               <td className='p-4'>
                 {task.description.slice(0, 20)}
