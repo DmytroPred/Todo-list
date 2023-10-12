@@ -4,6 +4,7 @@ import TaskDeleteButton from './TaskDeleteButton';
 import classes from './TaskTable.module.css';
 import { Task } from '@/app/models/task.interface';
 import { useRouter } from 'next/navigation';
+import ChangeTaskStatusButton from './ChangeTaskStatusButton';
 
 const TaskTable = ({ taskList }: { taskList: Task[] }) => {
   const router = useRouter();
@@ -56,7 +57,9 @@ const TaskTable = ({ taskList }: { taskList: Task[] }) => {
               <td className='p-4'>
                 {task.modificationDate.toDate().toDateString()}
               </td>
-              <td className='p-4'>{task.isDone ? 'Done' : 'In progress'}</td>
+              <td className='p-4'>
+                <ChangeTaskStatusButton isDone={task.isDone} taskId={task.id} />
+              </td>
               <td
                 className={`p-4 ${
                   taskList.length === index + 1 ? classes.roundRightCell : ''

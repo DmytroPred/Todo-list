@@ -7,22 +7,23 @@ import { debounce } from './utils/debounce';
 
 function HomePage() {
   const tasksCtx = useContext(TaskContext);
+  const [searchValue, setSearchValue] = useState<string>('');
   const [taskList, setTaskList] = useState<Task[]>(tasksCtx.taskList);
 
   useEffect(() => {
-    setTaskList(tasksCtx.taskList);
-  }, [tasksCtx.taskList]);
+    searchTaskByName(searchValue);
+  }, [tasksCtx.taskList, tasksCtx.emitChanges]);
 
-  function searchTaskByName(event: React.ChangeEvent<HTMLInputElement>) {
+  function searchTaskByName(searchValue: string) {
     const arr = tasksCtx.taskList.filter((task) =>
-      task.name.includes(event.target.value)
+      task.name.includes(searchValue)
     );
 
     setTaskList(arr);
   }
 
-  const searchWithDebounce = debounce(
-    (e: React.ChangeEvent<HTMLInputElement>) => searchTaskByName(e)
+  const searchWithDebounce = debounce((searchValue: string) =>
+    searchTaskByName(searchValue)
   );
 
   return (
@@ -32,7 +33,11 @@ function HomePage() {
           className='text-input mt-12'
           type='text'
           placeholder='Search by name...'
-          onChange={(e) => searchWithDebounce(e)}
+          value={searchValue}
+          onChange={(event) => {
+            setSearchValue(event.target.value);
+            searchWithDebounce(searchValue);
+          }}
         />
       </div>
 
