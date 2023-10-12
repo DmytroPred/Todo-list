@@ -14,16 +14,16 @@ function HomePage() {
     searchTaskByName(searchValue);
   }, [tasksCtx.taskList, tasksCtx.emitChanges]);
 
-  function searchTaskByName(searchValue: string) {
+  function searchTaskByName(searchVal: string) {
     const arr = tasksCtx.taskList.filter((task) =>
-      task.name.includes(searchValue)
+      task.name.includes(searchVal)
     );
 
     setTaskList(arr);
   }
 
-  const searchWithDebounce = debounce((searchValue: string) =>
-    searchTaskByName(searchValue)
+  const searchWithDebounce = debounce((searchVal: string) =>
+    searchTaskByName(searchVal)
   );
 
   return (
@@ -36,7 +36,7 @@ function HomePage() {
           value={searchValue}
           onChange={(event) => {
             setSearchValue(event.target.value);
-            searchWithDebounce(searchValue);
+            searchWithDebounce(event.target.value);
           }}
         />
       </div>
