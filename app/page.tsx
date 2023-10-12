@@ -1,5 +1,5 @@
 'use client';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import TaskTable from './components/ui/TaskTable';
 import TaskContext from './store/task-context';
 import { Task } from './models/task.interface';
@@ -7,11 +7,11 @@ import { debounce } from './utils/debounce';
 
 function HomePage() {
   const tasksCtx = useContext(TaskContext);
-  const [searchValue, setSearchValue] = useState<string>('');
+  const searchValue = useRef<string>('');
   const [taskList, setTaskList] = useState<Task[]>(tasksCtx.taskList);
 
   useEffect(() => {
-    searchTaskByName(searchValue);
+    searchTaskByName(searchValue.current);
   }, [tasksCtx.taskList, tasksCtx.emitChanges]);
 
   function searchTaskByName(searchVal: string) {
@@ -33,10 +33,10 @@ function HomePage() {
           className='text-input mt-12'
           type='text'
           placeholder='Search by name...'
-          value={searchValue}
-          onChange={(event) => {
-            setSearchValue(event.target.value);
-            searchWithDebounce(event.target.value);
+          onChange={(e) => {
+            const value = e.target.value;
+            searchValue.current = value;
+            return searchWithDebounce(value);
           }}
         />
       </div>
