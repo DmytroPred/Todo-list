@@ -63,6 +63,7 @@ export function TaskContextProvider(props: PropsWithChildren) {
   }: ChangeStatus): Promise<void> {
     await updateDoc(doc(db, `users/${userId}/tasks/${taskId}`), {
       isDone: doneStatus,
+      modificationDate: Timestamp.now(),
     }).then(() => {
       setTaskList((prevValue: Task[]) => {
         const taskIndex = prevValue.findIndex((el) => el.id === taskId);
