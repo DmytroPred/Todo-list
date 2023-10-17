@@ -42,17 +42,20 @@ export function TaskContextProvider(props: PropsWithChildren) {
   }
 
   async function addTaskHandler(task: Task): Promise<void> {
-    setTaskList((prevValue: Task[]) => {
-      prevValue.unshift(task);
-      return prevValue;
-    });
+    setTaskList((prevValue: Task[]) => [task, ...prevValue]);
   }
 
   function updateTaskHandler(task: Task): void {
     setTaskList((prevValue: Task[]) => {
       const taskIndex = prevValue.findIndex((el) => el.id === task.id);
-      prevValue[taskIndex] = task;
-      return prevValue;
+
+      const newArr: Task[] = [
+        ...prevValue.slice(0, taskIndex),
+        task,
+        ...prevValue.slice(taskIndex + 1),
+      ];
+
+      return newArr;
     });
   }
 
@@ -61,16 +64,26 @@ export function TaskContextProvider(props: PropsWithChildren) {
     userId,
     doneStatus,
   }: ChangeStatus): Promise<void> {
+    const modificationTime = Timestamp.now();
+
     await updateDoc(doc(db, `users/${userId}/tasks/${taskId}`), {
       isDone: doneStatus,
-      modificationDate: Timestamp.now(),
+      modificationDate: modificationTime,
     }).then(() => {
       setTaskList((prevValue: Task[]) => {
-        const taskIndex = prevValue.findIndex((el) => el.id === taskId);
-        prevValue[taskIndex].isDone = doneStatus;
-        prevValue[taskIndex].modificationDate = Timestamp.now();
+        const updatedTaskIndex = prevValue.findIndex((el) => el.id === taskId);
+        const task: Task = { ...prevValue[updatedTaskIndex] };
 
-        return prevValue;
+        task.isDone = doneStatus;
+        task.modificationDate = modificationTime;
+
+        const result: Task[] = [
+          ...prevValue.slice(0, updatedTaskIndex),
+          task,
+          ...prevValue.slice(updatedTaskIndex + 1),
+        ];
+
+        return result;
       });
 
       setEmitChanges((prevValue) => !prevValue);
@@ -82,11 +95,9 @@ export function TaskContextProvider(props: PropsWithChildren) {
     userId,
   }: TaskLocationType): Promise<void> {
     await deleteDoc(doc(db, `users/${userId}/tasks/${taskId}`)).then(() => {
-      setTaskList((prevValue: Task[]) => {
-        const tasks = prevValue;
-
-        return tasks.filter((task: Task) => task.id !== taskId);
-      });
+      setTaskList((prevValue: Task[]) =>
+        prevValue.filter((task: Task) => task.id !== taskId)
+      );
     });
   }
 
