@@ -12,7 +12,7 @@ function HomePage() {
 
   useEffect(() => {
     searchTaskByName(searchValue.current);
-  }, [tasksCtx.taskList, tasksCtx.emitChanges]);
+  }, [tasksCtx.taskList]);
 
   function searchTaskByName(searchVal: string) {
     const arr = tasksCtx.taskList.filter((task) =>
