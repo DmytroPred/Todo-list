@@ -6,10 +6,17 @@ import { Task } from '@/app/models/task.interface';
 import { useRouter } from 'next/navigation';
 import ChangeTaskStatusButton from './ChangeTaskStatusButton';
 
-const TaskTable = ({ taskList }: { taskList: Task[] }) => {
+const TaskTable = ({
+  taskList,
+  defaultImageUrl,
+}: {
+  taskList: Task[];
+  defaultImageUrl: string;
+}) => {
   const router = useRouter();
 
   const headers = [
+    '',
     'Name',
     'Description',
     'Creation Date',
@@ -41,12 +48,23 @@ const TaskTable = ({ taskList }: { taskList: Task[] }) => {
               onClick={() => router.push(`/task/${task.id}`)}
             >
               <td className={`p-4 ${lastItem ? classes.roundLeftCell : ''}`}>
+                <img
+                  className='rounded-2xl h-12 object-cover w-full'
+                  src={task.image || defaultImageUrl}
+                  alt='task'
+                />
+              </td>
+              <td>
                 {task.name.slice(0, 20)}
                 {task.name.length > 20 ? '...' : ''}
               </td>
               <td className='p-4'>
-                {task.description.slice(0, 20)}
-                {task.description.length > 20 ? '...' : ''}
+                <span
+                  className='inline'
+                  dangerouslySetInnerHTML={{
+                    __html: task.description.slice(0, 20),
+                  }}
+                ></span>
               </td>
               <td className='p-4'>
                 {task.creationDate.toDate().toDateString()}

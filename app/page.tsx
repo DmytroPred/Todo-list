@@ -10,6 +10,8 @@ function HomePage() {
   const tasksCtx = useContext(TaskContext);
   const searchValue = useRef<string>('');
   const [taskList, setTaskList] = useState<Task[]>(tasksCtx.taskList);
+  const defaultImage =
+    'https://t4.ftcdn.net/jpg/01/31/15/51/360_F_131155172_4ZVdaT7YF5yJHqircjy59DDxV6aWFds9.jpg';
 
   useEffect(() => {
     searchTaskByName(searchValue.current);
@@ -62,11 +64,13 @@ function HomePage() {
       </div>
 
       {tasksCtx.taskTableView ? (
-        <TaskTable taskList={taskList} />
+        <TaskTable taskList={taskList} defaultImageUrl={defaultImage} />
       ) : (
         <div className='mt-6 mb-12 w-11/12 h-11/12 mx-auto flex flex-wrap gap-8'>
           {taskList.map((task) => {
-            return <TaskCard task={task}></TaskCard>;
+            return (
+              <TaskCard task={task} defaultImageUrl={defaultImage}></TaskCard>
+            );
           })}
         </div>
       )}

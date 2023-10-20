@@ -2,14 +2,19 @@ import { Task } from '@/app/models/task.interface';
 import Link from 'next/link';
 import React from 'react';
 
-const TaskCard = ({ task }: { task: Task }) => {
-  console.log(task);
+const TaskCard = ({
+  task,
+  defaultImageUrl,
+}: {
+  task: Task;
+  defaultImageUrl: string;
+}) => {
   return (
     <Link href={`/task/${task.id}`}>
       <div className='bg-stone-100 rounded-2xl w-80'>
         <img
           className='rounded-t-2xl h-28 object-cover w-full'
-          src='https://t4.ftcdn.net/jpg/01/31/15/51/360_F_131155172_4ZVdaT7YF5yJHqircjy59DDxV6aWFds9.jpg'
+          src={task.image || defaultImageUrl}
           alt='task'
         />
         <div className='px-4 pt-2 pb-4 flex justify-between items-center'>
@@ -20,8 +25,12 @@ const TaskCard = ({ task }: { task: Task }) => {
             </span>
             <br />
             <span>
-              {task.description.slice(0, 20)}
-              {task.description.length > 20 ? '...' : ''}
+              <span
+                className='inline'
+                dangerouslySetInnerHTML={{
+                  __html: task.description.slice(0, 20),
+                }}
+              ></span>
             </span>
           </div>
           <div

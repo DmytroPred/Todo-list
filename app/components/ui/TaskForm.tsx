@@ -10,6 +10,8 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import { Task } from '@/app/models/task.interface';
 import { toast } from 'react-toastify';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 interface Props {
   isEditing: boolean;
@@ -17,6 +19,7 @@ interface Props {
 }
 
 interface Inputs {
+  image: string;
   name: string;
   description: string;
 }
@@ -28,6 +31,7 @@ const TaskForm = ({ isEditing, taskId }: Props) => {
   const authCtx = useContext(AuthContext);
   const tasksCtx = useContext(TaskContext);
   const {
+    watch,
     register,
     setValue,
     handleSubmit,
@@ -46,9 +50,16 @@ const TaskForm = ({ isEditing, taskId }: Props) => {
   }, [taskId]);
 
   function updateForm(task: Task) {
+    setValue('image', task.image ?? '');
     setValue('name', task.name);
     setValue('description', task.description);
   }
+
+  const editorContent = watch('description');
+
+  const onEditorStateChange = (editorState: string) => {
+    setValue('description', editorState);
+  };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     if (!authCtx.user) return;
@@ -91,6 +102,14 @@ const TaskForm = ({ isEditing, taskId }: Props) => {
         <div className='required'>
           <input
             className='text-input'
+            placeholder='Image url... (optional)'
+            {...register('image')}
+          />
+        </div>
+
+        <div className='required'>
+          <input
+            className='text-input'
             placeholder='Name...'
             {...register('name', { required: true })}
           />
@@ -100,11 +119,17 @@ const TaskForm = ({ isEditing, taskId }: Props) => {
         </div>
 
         <div className='required'>
-          <textarea
+          <ReactQuill
+            placeholder='Description...'
+            theme='snow'
+            value={editorContent}
+            onChange={onEditorStateChange}
+          />
+          {/* <textarea
             className='px-5 py-3 text-lg rounded-2xl border-2'
             placeholder='Description...'
             {...register('description', { required: true })}
-          />
+          /> */}
           {errors.description && (
             <span className='form-error'>Description field is required</span>
           )}
