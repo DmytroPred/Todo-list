@@ -6,6 +6,8 @@ import { db } from '../config/firebase';
 
 export interface TaskContextType {
   taskList: Task[];
+  taskTableView: boolean;
+  setTaskTableView: Dispatch<boolean>;
   setTasks: Dispatch<Task[]>;
   addTask: Dispatch<Task>;
   updateTask: Dispatch<Task>;
@@ -24,6 +26,8 @@ interface ChangeStatus extends TaskLocationType {
 
 const TaskContext = createContext<TaskContextType>({
   taskList: [],
+  taskTableView: true,
+  setTaskTableView: () => {},
   setTasks: () => {},
   addTask: () => {},
   updateTask: () => {},
@@ -33,6 +37,7 @@ const TaskContext = createContext<TaskContextType>({
 
 export function TaskContextProvider(props: PropsWithChildren) {
   const [taskList, setTaskList] = useState<Task[]>([]);
+  const [taskTableView, setTaskTableView] = useState<boolean>(true);
 
   function setTasksHandler(tasks: Task[]): void {
     setTaskList(tasks);
@@ -96,8 +101,14 @@ export function TaskContextProvider(props: PropsWithChildren) {
     });
   }
 
+  function setTaskTableViewHandler(isTable: boolean): void {
+    setTaskTableView(isTable);
+  }
+
   const context: TaskContextType = {
     taskList: taskList,
+    taskTableView: taskTableView,
+    setTaskTableView: setTaskTableViewHandler,
     setTasks: setTasksHandler,
     addTask: addTaskHandler,
     updateTask: updateTaskHandler,

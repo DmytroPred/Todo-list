@@ -11,9 +11,9 @@ const Header = () => {
 
   const loggedInTemplate = (
     <>
-      <div className='flex gap-8'>
+      <div className='flex gap-8 items-center'>
         <Link href='/create-task'>Create Task</Link>
-        <LogoutButton></LogoutButton>
+        <LogoutButton />
       </div>
     </>
   );

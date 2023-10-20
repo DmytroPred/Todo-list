@@ -33,17 +33,14 @@ const TaskTable = ({ taskList }: { taskList: Task[] }) => {
       </thead>
       <tbody>
         {taskList.map((task: Task, index: number) => {
+          const lastItem = taskList.length === index + 1;
           return (
             <tr
               key={task.id}
               className={`hover:bg-gray-300 cursor-pointer ${classes.round}`}
               onClick={() => router.push(`/task/${task.id}`)}
             >
-              <td
-                className={`p-4 ${
-                  taskList.length === index + 1 ? classes.roundLeftCell : ''
-                }`}
-              >
+              <td className={`p-4 ${lastItem ? classes.roundLeftCell : ''}`}>
                 {task.name.slice(0, 20)}
                 {task.name.length > 20 ? '...' : ''}
               </td>
@@ -60,11 +57,7 @@ const TaskTable = ({ taskList }: { taskList: Task[] }) => {
               <td className='p-4'>
                 <ChangeTaskStatusButton isDone={task.isDone} taskId={task.id} />
               </td>
-              <td
-                className={`p-4 ${
-                  taskList.length === index + 1 ? classes.roundRightCell : ''
-                }`}
-              >
+              <td className={`p-4 ${lastItem ? classes.roundRightCell : ''}`}>
                 <TaskDeleteButton deleteTaskId={task.id} />
               </td>
             </tr>
