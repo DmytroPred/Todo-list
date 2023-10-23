@@ -49,6 +49,10 @@ const TaskForm = ({ isEditing, taskId }: Props) => {
     }
   }, [taskId]);
 
+  useEffect(() => {
+    register('description', { required: true });
+  }, [register]);
+
   function updateForm(task: Task) {
     setValue('image', task.image ?? '');
     setValue('name', task.name);
@@ -125,11 +129,6 @@ const TaskForm = ({ isEditing, taskId }: Props) => {
             value={editorContent}
             onChange={onEditorStateChange}
           />
-          {/* <textarea
-            className='px-5 py-3 text-lg rounded-2xl border-2'
-            placeholder='Description...'
-            {...register('description', { required: true })}
-          /> */}
           {errors.description && (
             <span className='form-error'>Description field is required</span>
           )}
