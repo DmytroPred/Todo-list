@@ -69,7 +69,11 @@ function HomePage() {
         <div className='mt-6 mb-12 w-11/12 h-11/12 mx-auto flex flex-wrap gap-8'>
           {taskList.map((task) => {
             return (
-              <TaskCard task={task} defaultImageUrl={defaultImage}></TaskCard>
+              <TaskCard
+                key={task.id}
+                task={task}
+                defaultImageUrl={defaultImage}
+              ></TaskCard>
             );
           })}
         </div>

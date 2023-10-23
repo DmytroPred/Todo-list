@@ -41,6 +41,9 @@ const TaskTable = ({
       <tbody>
         {taskList.map((task: Task, index: number) => {
           const lastItem = taskList.length === index + 1;
+          const creationDate = task.creationDate.toDate();
+          const modDate = task.modificationDate.toDate();
+
           return (
             <tr
               key={task.id}
@@ -67,10 +70,12 @@ const TaskTable = ({
                 ></span>
               </td>
               <td className='p-4'>
-                {task.creationDate.toDate().toDateString()}
+                {creationDate.getDate()}/{creationDate.getMonth() + 1}/
+                {creationDate.getFullYear()}
               </td>
               <td className='p-4'>
-                {task.modificationDate.toDate().toDateString()}
+                {modDate.getDate()}/{modDate.getMonth() + 1}/
+                {modDate.getFullYear()}
               </td>
               <td className='p-4'>
                 <ChangeTaskStatusButton isDone={task.isDone} taskId={task.id} />
