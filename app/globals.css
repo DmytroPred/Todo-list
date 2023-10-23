@@ -31,5 +31,13 @@
 }
 
 .ql-container {
-    @apply rounded-b-2xl border-gray-300
+    @apply rounded-b-2xl border-gray-300 min-h-[120px]
+}
+
+.ql-editor {
+    @apply text-lg min-h-[120px]
+}
+
+.ql-blank {
+    @apply text-lg before:content-[attr(data-placeholder)] before:!not-italic before:!text-gray-400
 }
